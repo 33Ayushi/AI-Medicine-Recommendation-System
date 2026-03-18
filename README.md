@@ -6,8 +6,7 @@ An intelligent Machine Learning-based web application that recommends suitable m
 ---
 
 ## 🚀 Live Demo
-
-🔗 Add your deployed link here (if available)
+https://ai-medicine-recommendation-system-2.onrender.com/
 
 ---
 
