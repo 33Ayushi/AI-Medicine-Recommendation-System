@@ -1,13 +1,5 @@
-<<<<<<< HEAD
 flask
 numpy
 pandas
 scikit-learn
 gunicorn
-=======
-Flask
-numpy
-pandas
-scikit-learn
-gunicorn
->>>>>>> 197e591 (Complete project rebuild: fixed ML pipeline, modernized UI, fixed datasets)
