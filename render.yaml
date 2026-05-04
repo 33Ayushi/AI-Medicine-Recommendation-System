@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: AI-Medicine-Recommendation-System
+    runtime: python
+    rootDir: Medicine-Recommendation-System-Personalized-Medical-Recommendation-System-with-Machine-Learning-main
+    buildCommand: pip install -r requirements.txt && python fix_all.py
+    startCommand: gunicorn main:app
+    plan: free
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
