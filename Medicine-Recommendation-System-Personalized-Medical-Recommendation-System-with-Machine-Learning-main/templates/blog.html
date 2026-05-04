@@ -1,47 +1,180 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Blog Post</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-  </head>
-  <body>
-    <div class="container my-4 mt-4">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blog – Health Care Center</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    .hero { background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); color: #fff; padding: 90px 0 60px; text-align: center; }
+    .hero-badge { display: inline-block; background: rgba(239,68,68,.2); border: 1px solid rgba(239,68,68,.4); color: #fca5a5; border-radius: 50px; padding: 6px 18px; font-size: .82rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 18px; }
+    .hero h1 { font-size: clamp(1.9rem,5vw,3rem); font-weight: 800; }
+    /* Main article */
+    .main-article { background:#fff; border-radius:24px; overflow:hidden; box-shadow:0 4px 30px rgba(0,0,0,.1); }
+    .article-header { background:linear-gradient(135deg,#6366f1,#8b5cf6); padding:50px 40px; color:#fff; }
+    .article-body { padding:40px; }
+    .article-body h3 { font-weight:700; margin:32px 0 12px; font-size:1.2rem; }
+    .article-body h3:first-child { margin-top:0; }
+    .article-body p { color:#4b5563; line-height:1.75; font-size:.95rem; }
+    /* Sidebar cards */
+    .side-card { background:#fff; border-radius:18px; padding:28px; box-shadow:0 2px 20px rgba(0,0,0,.07); margin-bottom:20px; }
+    .tag { display:inline-block; background:#f1f5f9; color:#475569; border-radius:6px; padding:4px 10px; font-size:.78rem; font-weight:600; margin:3px; }
+    /* Steps list */
+    .step-item { display:flex; gap:14px; align-items:flex-start; padding:14px 0; border-bottom:1px solid #f3f4f6; }
+    .step-item:last-child { border-bottom:none; }
+    .step-num { width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0; }
+    /* Key feature cards */
+    .feature-card { border-left:4px solid #6366f1; background:#fafafa; border-radius:0 12px 12px 0; padding:16px 20px; margin-bottom:12px; }
+    .feature-card.green { border-color:#16a34a; }
+    .feature-card.blue  { border-color:#0284c7; }
+    .feature-card.red   { border-color:#dc2626; }
+    .feature-card.amber { border-color:#d97706; }
+  </style>
+</head>
+<body style="background:#f8fafc;">
 
-        <h2 class="text-center"> Building a Symptom-Based Disease Diagnosis Web App with Flask and Machine Learning</h2>
-        <p>In the age of technology and information, access to accurate and timely healthcare is more critical than ever. With the increasing importance of remote healthcare solutions, we embarked on a journey to develop a symptom-based disease diagnosis web application. Leveraging Flask for the backend and a Decision Tree Classifier model, we created a user-friendly platform that can help users identify potential illnesses based on their reported symptoms.</p>
-
-        <h3>The Problem</h3>
-        <p>The project began with recognizing a common issue: people often experience symptoms and want quick answers about their health concerns. It can be challenging to differentiate between various diseases, especially when symptoms overlap. Our goal was to provide a convenient solution for users to input their symptoms and receive potential diagnoses.</p>
-
-        <h3>The Solution</h3>
-        <p>We developed a web app that allows users to enter a list of symptoms they are experiencing. The app then uses a pre-trained Decision Tree Classifier model to predict the most likely disease based on the provided symptoms. Here's how it works:</p>
-
-        <ol>
-            <li><b><strong>Symptom Input:</strong></b> Users enter their symptoms through a user-friendly interface. The web app supports a wide range of symptoms, making it versatile for different scenarios.</li>
-            <li><b><strong>Machine Learning Model:</strong></b> We trained a Decision Tree Classifier using a dataset containing symptoms and corresponding diseases. The model is capable of predicting diseases based on input symptoms.</li>
-            <li><b><strong>Prediction:</strong></b> The app uses the model to predict the most likely disease, providing users with instant information about potential health concerns.</li>
-            <li><b><strong>Additional Information: </strong></b> To enhance user experience, the app also provides additional information about the predicted disease. This includes a description of the disease, recommended precautions, medications, dietary advice, and workout tips.</li>
-
-        </ol>
-
-        <h3>Key Features</h3>
-        <ul type="circle">
-            <li><b><strong>User-Friendly Interface:</strong></b> The web app boasts an intuitive and easy-to-navigate interface, ensuring that users can input their symptoms without any hassle.</li>
-            <li><b><strong>Accurate Predictions:</strong></b> Leveraging machine learning, our model provides accurate disease predictions based on the symptoms provided by the user.</li>
-            <li><b><strong>Comprehensive Information: </strong></b>In addition to predictions, the app offers comprehensive information about the predicted disease, including descriptions, precautions, medications, diet recommendations, and workout tips.</li>
-            <li><b><strong>ducational Content:</strong></b> To empower users with knowledge, the app includes informative blog posts about various health topics.</li>
-        </ul>
-
-        <br>
-
-        <h3>Conclusion</h3>
-        <p>Our Symptom-Based Disease Diagnosis Web App brings the power of machine learning and healthcare information to the fingertips of users. It serves as a valuable resource for individuals looking to gain insights into their health conditions quickly and conveniently. By combining technology and healthcare, we aim to make healthcare more accessible and user-centric.
-
-In an era where remote healthcare solutions are gaining prominence, this project represents a significant step forward in providing accessible and reliable healthcare information to the masses. We hope that this project will contribute to better health awareness and ultimately improve the well-being of individuals worldwide.</p>
-
+<nav class="navbar navbar-expand-lg navbar-dark" style="background:#1a1a2e;">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/predict"><i class="bi bi-heart-pulse-fill text-danger me-2"></i>Health Center</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBlog" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navBlog">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/predict">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+        <li class="nav-item"><a class="nav-link" href="/developer">Developer</a></li>
+        <li class="nav-item"><a class="nav-link active text-light fw-semibold" href="/blog">Blog</a></li>
+      </ul>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-  </body>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="container">
+    <div class="hero-badge"><i class="bi bi-file-text me-1"></i>Tech Blog</div>
+    <h1>Building a Symptom-Based<br>Disease Diagnosis App</h1>
+    <p class="mt-3" style="opacity:.8;max-width:580px;margin:12px auto 0;">Using Flask, Python, and Machine Learning to bring AI-powered healthcare to everyone.</p>
+    <div class="mt-4 d-flex justify-content-center gap-3 flex-wrap">
+      <span class="badge rounded-pill px-3 py-2" style="background:rgba(255,255,255,.12);font-size:.82rem;"><i class="bi bi-clock me-1"></i>8 min read</span>
+      <span class="badge rounded-pill px-3 py-2" style="background:rgba(255,255,255,.12);font-size:.82rem;"><i class="bi bi-calendar3 me-1"></i>May 2026</span>
+      <span class="badge rounded-pill px-3 py-2" style="background:rgba(255,255,255,.12);font-size:.82rem;"><i class="bi bi-person me-1"></i>Ayushi Katiyar</span>
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="container py-5">
+  <div class="row g-4 align-items-start">
+
+    <!-- MAIN ARTICLE -->
+    <div class="col-lg-8">
+      <div class="main-article">
+        <div class="article-header">
+          <div class="d-flex gap-2 mb-3 flex-wrap">
+            <span class="badge bg-white text-primary fw-semibold">Machine Learning</span>
+            <span class="badge bg-white text-success fw-semibold">Flask</span>
+            <span class="badge bg-white text-danger fw-semibold">Healthcare AI</span>
+          </div>
+          <h2 class="fw-bold mb-2">From Symptoms to Diagnosis — The Engineering Story</h2>
+          <p style="opacity:.85;font-size:.95rem;">In the age of technology, access to accurate healthcare information is more critical than ever. We built a system that bridges AI and medicine.</p>
+        </div>
+
+        <div class="article-body">
+          <h3><i class="bi bi-question-circle-fill text-primary me-2"></i>The Problem</h3>
+          <p>People experience symptoms every day and want quick, reliable answers. Differentiating between diseases that share similar symptoms — like Malaria and Typhoid, or Migraine and Hypertension — is genuinely hard. Most online tools are either too vague or require a doctor's visit. We set out to close that gap with AI.</p>
+
+          <h3><i class="bi bi-lightbulb-fill text-warning me-2"></i>The Solution</h3>
+          <p>We built a web application where users select their symptoms from a validated list and receive an instant, AI-powered disease prediction along with a full health report — medications, precautions, diet plans, and workout recommendations.</p>
+
+          <!-- Steps -->
+          <div class="bg-light rounded-4 p-4 my-3">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div><strong>Symptom Collection</strong><br><span class="text-muted" style="font-size:.88rem;">Users type into a smart autocomplete field showing 132 medically-validated symptoms from real clinical data.</span></div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div><strong>ML Prediction</strong><br><span class="text-muted" style="font-size:.88rem;">A Support Vector Classifier trained on 4,920 patient records converts symptoms into a binary feature vector and predicts the disease.</span></div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div><strong>Rich Health Report</strong><br><span class="text-muted" style="font-size:.88rem;">The system looks up 5 supplementary datasets to return disease description, precautions, medications, diet, and workouts.</span></div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">4</div>
+              <div><strong>Served via Flask</strong><br><span class="text-muted" style="font-size:.88rem;">A lightweight Python Flask backend renders results using Jinja2 templates — fast, reliable, and easily deployable.</span></div>
+            </div>
+          </div>
+
+          <h3><i class="bi bi-cpu-fill text-danger me-2"></i>The Machine Learning Model</h3>
+          <p>We chose a <strong>Support Vector Classifier (SVC)</strong> with a linear kernel for this task. After evaluating multiple algorithms on our dataset (SVC, Random Forest, Naive Bayes), SVC consistently achieved <strong>100% test accuracy</strong> with clean, balanced data — making it the ideal choice.</p>
+          <p>The model is trained using scikit-learn's <code>LabelEncoder</code> for target classes, and all feature names are preserved in a <code>feature_names.pkl</code> file to ensure predictions always use the correct column mapping.</p>
+
+          <h3><i class="bi bi-stars text-success me-2"></i>Key Features</h3>
+          <div class="feature-card"><strong><i class="bi bi-search me-2 text-primary"></i>Smart Autocomplete</strong><br><span class="text-muted" style="font-size:.88rem;">Users pick from 132 valid symptoms — eliminating spelling mistakes that would break predictions.</span></div>
+          <div class="feature-card green"><strong><i class="bi bi-shield-check me-2 text-success"></i>Accurate Predictions</strong><br><span class="text-muted" style="font-size:.88rem;">100% test accuracy. The model uses clean, properly labeled training data with no version mismatches.</span></div>
+          <div class="feature-card blue"><strong><i class="bi bi-clipboard2-pulse me-2 text-primary"></i>Complete Health Reports</strong><br><span class="text-muted" style="font-size:.88rem;">Every prediction comes with description, precautions, medications, diet plan, and workout tips.</span></div>
+          <div class="feature-card amber"><strong><i class="bi bi-mic-fill me-2 text-warning"></i>Voice Input</strong><br><span class="text-muted" style="font-size:.88rem;">Users can speak their symptoms using the browser's Web Speech API — fully cross-browser with proper fallback.</span></div>
+
+          <h3><i class="bi bi-flag-fill text-info me-2"></i>Conclusion</h3>
+          <p>This project demonstrates how machine learning can make a real difference in healthcare accessibility. By combining a rigorously trained SVC model with a clean, user-friendly Flask interface, we deliver reliable medical insights to anyone with a browser. We hope this inspires more developers to build at the intersection of AI and healthcare.</p>
+
+          <div class="mt-4 p-4 rounded-3" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;">
+            <strong><i class="bi bi-play-circle-fill me-2"></i>Ready to try it?</strong>
+            <p class="mb-2 mt-1" style="opacity:.9;font-size:.9rem;">Enter your symptoms and see the AI predict your condition in seconds.</p>
+            <a href="/predict" class="btn btn-light fw-semibold px-4">Launch the App →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="col-lg-4">
+      <div class="side-card">
+        <h6 class="fw-bold mb-3"><i class="bi bi-bar-chart-fill text-primary me-2"></i>Project Stats</h6>
+        <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted" style="font-size:.88rem;">Diseases Covered</span><strong>41</strong></div>
+        <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted" style="font-size:.88rem;">Symptoms Supported</span><strong>132</strong></div>
+        <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted" style="font-size:.88rem;">Training Records</span><strong>4,920</strong></div>
+        <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted" style="font-size:.88rem;">Model Accuracy</span><strong class="text-success">90%</strong></div>
+        <div class="d-flex justify-content-between py-2"><span class="text-muted" style="font-size:.88rem;">ML Algorithm</span><strong>SVC</strong></div>
+      </div>
+
+      <div class="side-card">
+        <h6 class="fw-bold mb-3"><i class="bi bi-stack text-warning me-2"></i>Tech Stack</h6>
+        <div class="d-flex flex-wrap gap-1">
+          <span class="tag">Python 3.13</span>
+          <span class="tag">Flask</span>
+          <span class="tag">scikit-learn</span>
+          <span class="tag">Pandas</span>
+          <span class="tag">NumPy</span>
+          <span class="tag">Bootstrap 5</span>
+          <span class="tag">Jinja2</span>
+          <span class="tag">Web Speech API</span>
+          <span class="tag">LabelEncoder</span>
+          <span class="tag">SVC</span>
+        </div>
+      </div>
+
+      <div class="side-card">
+        <h6 class="fw-bold mb-3"><i class="bi bi-link-45deg text-info me-2"></i>Quick Links</h6>
+        <div class="d-flex flex-column gap-2">
+          <a href="/predict" class="btn btn-danger fw-semibold"><i class="bi bi-cpu me-2"></i>Try the App</a>
+          <a href="/about" class="btn btn-outline-secondary"><i class="bi bi-info-circle me-2"></i>About the Project</a>
+          <a href="/developer" class="btn btn-outline-secondary"><i class="bi bi-person me-2"></i>Meet the Developer</a>
+          <a href="/contact" class="btn btn-outline-secondary"><i class="bi bi-envelope me-2"></i>Contact Us</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
+
+

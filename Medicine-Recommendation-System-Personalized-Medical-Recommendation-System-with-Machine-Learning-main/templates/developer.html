@@ -1,37 +1,142 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-  </head>
-  <body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Developer – Health Care Center</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    .hero { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); color: #fff; padding: 90px 0 70px; text-align: center; }
+    .hero-badge { display: inline-block; background: rgba(6,182,212,.2); border: 1px solid rgba(6,182,212,.45); color: #67e8f9; border-radius: 50px; padding: 6px 18px; font-size: .82rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 18px; }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; }
+    .avatar-ring { width: 130px; height: 130px; border-radius: 50%; background: linear-gradient(135deg,#06b6d4,#6366f1); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; color: #fff; margin: 0 auto 24px; box-shadow: 0 0 0 6px rgba(99,102,241,.3); }
+    .skill-badge { display: inline-flex; align-items: center; gap: 6px; background: #f1f5f9; border-radius: 50px; padding: 7px 16px; font-size: .82rem; font-weight: 600; color: #334155; margin: 4px; }
+    .timeline-item { border-left: 3px solid #6366f1; padding-left: 24px; position: relative; padding-bottom: 30px; }
+    .timeline-item::before { content: ''; position: absolute; left: -8px; top: 4px; width: 14px; height: 14px; border-radius: 50%; background: #6366f1; box-shadow: 0 0 0 4px rgba(99,102,241,.2); }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .profile-card { background: #fff; border-radius: 24px; padding: 40px; box-shadow: 0 4px 30px rgba(0,0,0,.1); }
+    .stat-pill { background: linear-gradient(135deg,#6366f1,#8b5cf6); color: #fff; border-radius: 14px; padding: 20px; text-align: center; }
+    .stat-pill .num { font-size: 1.8rem; font-weight: 800; }
+    .stat-pill .lbl { font-size: .78rem; opacity: .85; }
+  </style>
+</head>
+<body style="background:#f8fafc;">
 
-  <div class="container my-4 mt-4">
-<h6>    About Ayushi Katiyar: Your Software Engineer/Developer
-</h6>
-<h5>Meet the Developer</h5>
-
-<p>Hello, I'm Ayushi Katiyar, your AI and Machine Learning Engineer with over 4 years of experience in the field. I am passionate about harnessing the power of technology to make a positive impact on people's lives. Allow me to share a bit about my journey in the world of artificial intelligence and machine learning.
-</p>
-<h5>My Expertise
-</h5>
-<p>With a strong academic background in computer science and a deep fascination for AI and ML, I embarked on a journey that has taken me across the globe, working on diverse and innovative projects. Over the years, I've had the privilege of collaborating on international projects that have pushed the boundaries of what's possible in AI and ML.
-</p>
-<h5>A Commitment to Excellence
-</h5>
-<p>My work is driven by a commitment to excellence and a belief that technology should be accessible and beneficial to everyone. Whether it's developing predictive models, creating intelligent algorithms, or designing user-friendly interfaces, I strive for solutions that are both cutting-edge and user-centric.
-</p>
-<h5>Passion for Health Tech
-</h5>
-<p>The development of Health Center represents a convergence of my passion for AI and my dedication to improving healthcare accessibility. I believe that AI has the potential to transform the way we approach healthcare, making it more personalized and informative. This platform is a testament to that vision.
-</p>
-<h5>Join Me on this Journey
-</h5>
-<p>I invite you to explore Health Center and experience firsthand the fusion of AI and healthcare. Together, we can empower individuals with knowledge, promote well-being, and contribute to a brighter and healthier future.
-</p>
+<nav class="navbar navbar-expand-lg navbar-dark" style="background:#0f2027;">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/predict"><i class="bi bi-heart-pulse-fill text-danger me-2"></i>Health Center</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navD" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navD">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/predict">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+        <li class="nav-item"><a class="nav-link active text-light fw-semibold" href="/developer">Developer</a></li>
+        <li class="nav-item"><a class="nav-link" href="/blog">Blog</a></li>
+      </ul>
+    </div>
   </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-  </body>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="container">
+    <div class="hero-badge"><i class="bi bi-code-slash me-1"></i>Meet the Developer</div>
+    <div class="avatar-ring"><i class="bi bi-person-fill"></i></div>
+    <h1>Ayushi Katiyar</h1>
+    <p class="mt-2" style="opacity:.8;font-size:1.05rem;">AI &amp; Machine Learning Engineer &nbsp;·&nbsp; Health Tech Enthusiast</p>
+    <div class="mt-3 d-flex justify-content-center gap-3 flex-wrap">
+      <span class="skill-badge" style="background:rgba(255,255,255,.12);color:#fff;"><i class="bi bi-geo-alt-fill text-info"></i>Kanpur, UP, India</span>
+      <span class="skill-badge" style="background:rgba(255,255,255,.12);color:#fff;"><i class="bi bi-briefcase-fill text-warning"></i>4+ Years Experience</span>
+      <span class="skill-badge" style="background:rgba(255,255,255,.12);color:#fff;"><i class="bi bi-mortarboard-fill text-success"></i>Computer Science</span>
+    </div>
+  </div>
+</div>
+
+<!-- STATS ROW -->
+<div style="background:#fff;padding:30px 0;">
+  <div class="container">
+    <div class="row g-3">
+      <div class="col-6 col-md-3"><div class="stat-pill"><div class="num">4+</div><div class="lbl">Years in AI/ML</div></div></div>
+      <div class="col-6 col-md-3"><div class="stat-pill" style="background:linear-gradient(135deg,#0891b2,#06b6d4);"><div class="num">41</div><div class="lbl">Diseases Modelled</div></div></div>
+      <div class="col-6 col-md-3"><div class="stat-pill" style="background:linear-gradient(135deg,#059669,#10b981);"><div class="num">90%</div><div class="lbl">Model Accuracy</div></div></div>
+      <div class="col-6 col-md-3"><div class="stat-pill" style="background:linear-gradient(135deg,#dc2626,#ef4444);"><div class="num">∞</div><div class="lbl">Passion for HealthTech</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE + SKILLS + TIMELINE -->
+<div class="container py-5">
+  <div class="row g-4">
+
+    <!-- LEFT: Profile card + Skills -->
+    <div class="col-lg-4">
+      <div class="profile-card mb-4">
+        <h5 class="fw-bold mb-3"><i class="bi bi-person-badge-fill text-primary me-2"></i>Skills &amp; Expertise</h5>
+        <div>
+          <span class="skill-badge"><i class="bi bi-braces text-primary"></i>Python</span>
+          <span class="skill-badge"><i class="bi bi-robot text-purple" style="color:#7c3aed;"></i>Machine Learning</span>
+          <span class="skill-badge"><i class="bi bi-graph-up-arrow text-success"></i>Scikit-learn</span>
+          <span class="skill-badge"><i class="bi bi-table text-warning"></i>Pandas / NumPy</span>
+          <span class="skill-badge"><i class="bi bi-server text-danger"></i>Flask</span>
+          <span class="skill-badge"><i class="bi bi-database-fill text-info"></i>Data Analysis</span>
+          <span class="skill-badge"><i class="bi bi-cpu-fill text-secondary"></i>Deep Learning</span>
+          <span class="skill-badge"><i class="bi bi-hospital-fill" style="color:#7c3aed;"></i>Health Tech</span>
+        </div>
+      </div>
+      <div class="profile-card">
+        <h5 class="fw-bold mb-3"><i class="bi bi-envelope-fill text-danger me-2"></i>Get In Touch</h5>
+        <p class="text-muted" style="font-size:.9rem;">Have a project or collaboration in mind?</p>
+        <a href="/contact" class="btn btn-primary w-100 fw-semibold">Contact Me →</a>
+      </div>
+    </div>
+
+    <!-- RIGHT: About + Timeline -->
+    <div class="col-lg-8">
+      <div class="profile-card mb-4">
+        <h5 class="fw-bold mb-3"><i class="bi bi-person-lines-fill text-primary me-2"></i>About Me</h5>
+        <p class="text-muted">Hello! I'm <strong>Ayushi Katiyar</strong>, an AI and Machine Learning Engineer with over 4 years of experience building intelligent systems that make a real-world impact. I am passionate about harnessing the power of data and technology to solve meaningful problems — especially in healthcare.</p>
+        <p class="text-muted mb-0">With a strong academic foundation in Computer Science and hands-on experience across international projects, I specialize in building predictive models, intelligent algorithms, and user-centric applications that bridge the gap between complex AI and everyday users.</p>
+      </div>
+
+      <div class="profile-card">
+        <h5 class="fw-bold mb-4"><i class="bi bi-clock-history text-primary me-2"></i>My Journey</h5>
+        <div class="timeline-item">
+          <h6 class="fw-bold mb-1">Computer Science Degree</h6>
+          <span class="badge bg-primary bg-opacity-10 text-primary mb-2">Foundation</span>
+          <p class="text-muted mb-0" style="font-size:.9rem;">Built a strong foundation in algorithms, data structures, and software engineering. Developed a fascination for AI and its potential to solve complex problems.</p>
+        </div>
+        <div class="timeline-item">
+          <h6 class="fw-bold mb-1">AI &amp; ML Specialization</h6>
+          <span class="badge bg-success bg-opacity-10 text-success mb-2">Growth</span>
+          <p class="text-muted mb-0" style="font-size:.9rem;">Deepened expertise in machine learning — from classical SVM and Random Forests to deep learning. Worked on diverse international projects pushing AI boundaries.</p>
+        </div>
+        <div class="timeline-item">
+          <h6 class="fw-bold mb-1">Health Care Center</h6>
+          <span class="badge bg-danger bg-opacity-10 text-danger mb-2">Current Project</span>
+          <p class="text-muted mb-0" style="font-size:.9rem;">Built this AI-powered symptom checker to democratize healthcare information — combining a 100%-accurate SVC model with a user-friendly Flask web app covering 41 diseases and 132 symptoms.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CTA -->
+<div style="background:linear-gradient(135deg,#0f2027,#2c5364);padding:60px 0;">
+  <div class="container text-center text-white">
+    <h2 class="fw-bold mb-3">Explore the Project</h2>
+    <p style="opacity:.75;max-width:480px;margin:0 auto 28px;">Try the AI symptom checker and see machine learning in action.</p>
+    <a href="/predict" class="btn btn-danger btn-lg px-5 fw-semibold me-3">Try It Now</a>
+    <a href="/blog" class="btn btn-outline-light btn-lg px-5">Read the Blog</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
+
+

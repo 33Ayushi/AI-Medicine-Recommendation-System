@@ -1,4 +1,4 @@
-,Unnamed: 0,disease,workout
+Unnamed: 0.1,Unnamed: 0,disease,workout
 0,0,Fungal infection,Avoid sugary foods
 1,1,Fungal infection,Consume probiotics
 2,2,Fungal infection,Increase intake of garlic
@@ -49,16 +49,16 @@
 47,47,Drug Reaction,Stay hydrated
 48,48,Drug Reaction,Eat a balanced diet
 49,49,Drug Reaction,Consult a healthcare professional
-50,50,Peptic ulcer disease,"Consume smaller, more frequent meals"
-51,51,Peptic ulcer disease,"Avoid trigger foods (spicy, acidic)"
-52,52,Peptic ulcer disease,Include high-fiber foods
-53,53,Peptic ulcer disease,Limit caffeine and alcohol
-54,54,Peptic ulcer disease,Stay hydrated
-55,55,Peptic ulcer disease,Consume probiotics
-56,56,Peptic ulcer disease,Include lean proteins
-57,57,Peptic ulcer disease,Include antioxidant-rich foods
-58,58,Peptic ulcer disease,Limit processed foods
-59,59,Peptic ulcer disease,Avoid smoking and alcohol
+50,50,Peptic ulcer diseae,"Consume smaller, more frequent meals"
+51,51,Peptic ulcer diseae,"Avoid trigger foods (spicy, acidic)"
+52,52,Peptic ulcer diseae,Include high-fiber foods
+53,53,Peptic ulcer diseae,Limit caffeine and alcohol
+54,54,Peptic ulcer diseae,Stay hydrated
+55,55,Peptic ulcer diseae,Consume probiotics
+56,56,Peptic ulcer diseae,Include lean proteins
+57,57,Peptic ulcer diseae,Include antioxidant-rich foods
+58,58,Peptic ulcer diseae,Limit processed foods
+59,59,Peptic ulcer diseae,Avoid smoking and alcohol
 60,60,AIDS,Follow a balanced and nutritious diet
 61,61,AIDS,Include lean proteins
 62,62,AIDS,Consume nutrient-rich foods

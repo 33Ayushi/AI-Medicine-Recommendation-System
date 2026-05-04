@@ -3,321 +3,528 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Health Care Center</title>
-
+<title>Health Care Center – AI Symptom Checker</title>
+<meta name="description" content="Enter your symptoms and get AI-powered disease predictions with medications, precautions, diet and workout recommendations.">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
 <style>
-.logo{
-width:50px;
-height:50px;
-margin-left:2px;
+/* ── Autocomplete dropdown ───────────────────────────────── */
+#autocomplete-list {
+  position: absolute;
+  z-index: 9999;
+  width: 100%;
+  max-height: 220px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #ced4da;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.15);
+}
+#autocomplete-list .ac-item {
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: .9rem;
+  color: #212529;
+}
+#autocomplete-list .ac-item:hover,
+#autocomplete-list .ac-item.active {
+  background: #0d6efd;
+  color: #fff;
 }
 
-.myimg{
-width:50px;
-height:50px;
-border:2px solid black;
-border-radius:25px;
+/* ── Tags (selected symptoms) ───────────────────────────── */
+#tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 6px 0;
+  min-height: 36px;
+}
+.symptom-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #0d6efd;
+  color: #fff;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: .82rem;
+  font-weight: 500;
+}
+.symptom-tag .remove-tag {
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  opacity: .8;
+}
+.symptom-tag .remove-tag:hover { opacity: 1; }
+
+/* ── Mic button animation ───────────────────────────────── */
+#micBtn.listening {
+  animation: pulse 1s infinite;
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+  color: #fff !important;
+}
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(220,53,69,.6); }
+  70%  { box-shadow: 0 0 0 10px rgba(220,53,69,0); }
+  100% { box-shadow: 0 0 0 0 rgba(220,53,69,0); }
 }
 
-.result-buttons button{
-margin:10px;
-width:180px;
-font-size:18px;
-font-weight:bold;
-}
+/* ── Result buttons ─────────────────────────────────────── */
+.result-buttons button { margin: 8px; min-width: 160px; font-weight: 600; }
 </style>
-
 </head>
 
 <body>
 
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-<div class="container-fluid">
-
-<div class="logo">
-<img class="myimg" src="{{ url_for('static', filename='img.png') }}">
-</div>
-
-<a class="navbar-brand" href="#">Health Center</a>
-
-<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
-<span class="navbar-toggler-icon"></span>
-</button>
-
-<div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-<li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
-<li class="nav-item"><a class="nav-link" href="/about">About</a></li>
-<li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
-<li class="nav-item"><a class="nav-link" href="/developer">Developer</a></li>
-<li class="nav-item"><a class="nav-link" href="/blog">Blog</a></li>
-
-</ul>
-
-</div>
-</div>
+  <div class="container-fluid">
+    <img src="{{ url_for('static', filename='img.png') }}"
+         alt="logo" width="42" height="42"
+         class="rounded-circle border border-white me-2">
+    <a class="navbar-brand" href="/predict">Health Center</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navMain" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link active" href="/predict">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+        <li class="nav-item"><a class="nav-link" href="/developer">Developer</a></li>
+        <li class="nav-item"><a class="nav-link" href="/blog">Blog</a></li>
+      </ul>
+    </div>
+  </div>
 </nav>
 
 
-<h1 class="text-center mt-4">Health Care Center</h1>
+<div class="container mt-4">
+  <h1 class="text-center mb-1">Health Care Center</h1>
+  <p class="text-center text-muted mb-4">Enter your symptoms below and our AI will predict the disease</p>
 
+  <!-- ALERTS -->
+  {% if message %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %}
 
-<!-- FORM -->
-<div class="container mt-4" style="background:black;color:white;border-radius:15px;padding:40px">
+  {% if warning %}
+  <div class="alert alert-info alert-dismissible fade show" role="alert">
+    <i class="bi bi-info-circle-fill me-2"></i>{{ warning }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endif %}
 
-<form action="/predict" method="post">
+  <!-- FORM -->
+  <div style="background:#111;color:#fff;border-radius:16px;padding:36px">
+    <form action="/predict" method="post" id="predictForm">
 
-<label>Select Symptoms:</label>
+      <label class="form-label fw-semibold mb-1">
+        <i class="bi bi-search me-1"></i>Type a symptom and select from suggestions:
+      </label>
 
-<input
-type="text"
-class="form-control"
-id="symptoms"
-name="symptoms"
-value="{{ symptoms }}"
-placeholder="type symptoms like fever, headache, vomiting">
+      <!-- Tag display area -->
+      <div id="tag-container"></div>
 
-<br>
+      <!-- Autocomplete search input (NOT submitted) -->
+      <div class="position-relative mt-2">
+        <input
+          type="text"
+          class="form-control form-control-lg"
+          id="symptomInput"
+          autocomplete="off"
+          placeholder="e.g. itching, skin rash, headache…">
+        <div id="autocomplete-list"></div>
+      </div>
 
-<button
-type="button"
-id="startSpeechRecognition"
-class="btn btn-primary">
+      <!-- THIS is what gets submitted — always kept in sync with selectedSymptoms -->
+      <textarea
+        name="symptoms"
+        id="symptomsField"
+        style="display:none;"
+        readonly>{{ symptoms if symptoms else '' }}</textarea>
 
-Start Speech Recognition
+      <div class="d-flex align-items-center gap-3 mt-3 flex-wrap">
+        <button type="button" id="micBtn" class="btn btn-outline-light">
+          <i class="bi bi-mic-fill me-1"></i>Voice Input
+        </button>
+        <small id="micStatus" class="text-secondary"></small>
+        <button type="button" id="clearBtn" class="btn btn-outline-secondary btn-sm">
+          <i class="bi bi-x-circle me-1"></i>Clear All
+        </button>
+      </div>
 
-</button>
+      <button type="submit" class="btn btn-danger btn-lg w-100 mt-4">
+        <i class="bi bi-cpu me-2"></i>Predict Disease
+      </button>
+    </form>
 
-<br><br>
-
-<button
-type="submit"
-class="btn btn-danger btn-lg"
-style="width:100%">
-
-Predict
-
-</button>
-
-</form>
-
+    <!-- How to use hint -->
+    <div class="mt-3 text-secondary" style="font-size:.82rem">
+      <i class="bi bi-lightbulb-fill text-warning me-1"></i>
+      <strong>Tip:</strong> Type a word, pick from the dropdown. Add multiple symptoms for accurate results.
+      The model works best with <strong>4–6 symptoms</strong>.
+    </div>
+  </div>
 </div>
 
 
-<!-- SHOW ENTERED SYMPTOMS -->
-{% if symptoms %}
-
-<div class="container text-center mt-3">
-
-<h5>Entered Symptoms</h5>
-
-<p style="color:yellow;font-weight:bold;font-size:18px">
-{{ symptoms }}
-</p>
-
-</div>
-
-{% endif %}
-
-
+<!-- RESULTS -->
 {% if predicted_disease %}
+<div class="container mt-4">
+  <h2 class="text-center">AI Prediction Results</h2>
 
-<h2 class="text-center mt-4">Our AI System Results</h2>
+  {% if matched_symptoms %}
+  <p class="text-center text-muted">
+    Based on:
+    {% for s in matched_symptoms %}
+    <span class="badge bg-primary me-1">{{ s.replace("_"," ") }}</span>
+    {% endfor %}
+  </p>
+  {% endif %}
 
-<div class="container text-center result-buttons">
-
-<button class="btn btn-warning btn-lg"
-data-bs-toggle="modal"
-data-bs-target="#diseaseModal">
-Disease
-</button>
-
-<button class="btn btn-primary btn-lg"
-data-bs-toggle="modal"
-data-bs-target="#descriptionModal">
-Description
-</button>
-
-<button class="btn btn-info btn-lg"
-data-bs-toggle="modal"
-data-bs-target="#precautionModal">
-Precaution
-</button>
-
-<button class="btn btn-danger btn-lg"
-data-bs-toggle="modal"
-data-bs-target="#medicationsModal">
-Medications
-</button>
-
-<button class="btn btn-success btn-lg"
-data-bs-toggle="modal"
-data-bs-target="#workoutsModal">
-Workouts
-</button>
-
-<button class="btn btn-secondary btn-lg"
-data-bs-toggle="modal"
-data-bs-target="#dietsModal">
-Diets
-</button>
-
+  <div class="text-center result-buttons mt-3">
+    <button class="btn btn-warning btn-lg" data-bs-toggle="modal" data-bs-target="#diseaseModal">
+      <i class="bi bi-virus me-1"></i>Disease
+    </button>
+    <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#descriptionModal">
+      <i class="bi bi-file-text me-1"></i>Description
+    </button>
+    <button class="btn btn-info btn-lg text-white" data-bs-toggle="modal" data-bs-target="#precautionModal">
+      <i class="bi bi-shield-check me-1"></i>Precautions
+    </button>
+    <button class="btn btn-danger btn-lg" data-bs-toggle="modal" data-bs-target="#medicationsModal">
+      <i class="bi bi-capsule me-1"></i>Medications
+    </button>
+    <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#workoutsModal">
+      <i class="bi bi-activity me-1"></i>Workouts
+    </button>
+    <button class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#dietsModal">
+      <i class="bi bi-egg-fried me-1"></i>Diets
+    </button>
+  </div>
 </div>
-
 {% endif %}
 
 
-<!-- DISEASE MODAL -->
-<div class="modal fade" id="diseaseModal">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header bg-dark text-white">
-<h5>Predicted Disease</h5>
-<button class="btn-close" data-bs-dismiss="modal"></button>
+<!-- MODALS -->
+{% macro modal(id, title, icon) %}
+<div class="modal fade" id="{{ id }}" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title"><i class="bi bi-{{ icon }} me-2"></i>{{ title }}</h5>
+        <button class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">{{ caller() }}</div>
+    </div>
+  </div>
 </div>
-<div class="modal-body">
-<p>{{ predicted_disease }}</p>
+{% endmacro %}
+
+<!-- Disease -->
+<div class="modal fade" id="diseaseModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header bg-dark text-white">
+      <h5 class="modal-title"><i class="bi bi-virus me-2"></i>Predicted Disease</h5>
+      <button class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <h4 class="text-danger fw-bold">{{ predicted_disease }}</h4>
+    </div>
+  </div></div>
 </div>
+
+<!-- Description -->
+<div class="modal fade" id="descriptionModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable"><div class="modal-content">
+    <div class="modal-header bg-dark text-white">
+      <h5 class="modal-title"><i class="bi bi-file-text me-2"></i>Description</h5>
+      <button class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body"><p>{{ dis_des }}</p></div>
+  </div></div>
 </div>
+
+<!-- Precautions -->
+<div class="modal fade" id="precautionModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header bg-dark text-white">
+      <h5 class="modal-title"><i class="bi bi-shield-check me-2"></i>Precautions</h5>
+      <button class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <ul class="list-group list-group-flush">
+        {% for p in my_precautions %}
+        {% if p and p == p %}  {# skip NaN #}
+        <li class="list-group-item"><i class="bi bi-check-circle-fill text-success me-2"></i>{{ p }}</li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div></div>
 </div>
+
+<!-- Medications -->
+<div class="modal fade" id="medicationsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header bg-dark text-white">
+      <h5 class="modal-title"><i class="bi bi-capsule me-2"></i>Medications</h5>
+      <button class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <ul class="list-group list-group-flush">
+        {% for m in medications %}
+        <li class="list-group-item"><i class="bi bi-capsule-pill text-danger me-2"></i>{{ m }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div></div>
+</div>
+
+<!-- Workouts -->
+<div class="modal fade" id="workoutsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header bg-dark text-white">
+      <h5 class="modal-title"><i class="bi bi-activity me-2"></i>Workouts</h5>
+      <button class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <ul class="list-group list-group-flush">
+        {% for w in workout %}
+        <li class="list-group-item"><i class="bi bi-heart-pulse text-success me-2"></i>{{ w }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div></div>
+</div>
+
+<!-- Diets -->
+<div class="modal fade" id="dietsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header bg-dark text-white">
+      <h5 class="modal-title"><i class="bi bi-egg-fried me-2"></i>Recommended Diet</h5>
+      <button class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <ul class="list-group list-group-flush">
+        {% for d in my_diet %}
+        <li class="list-group-item"><i class="bi bi-check2-circle text-warning me-2"></i>{{ d }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div></div>
 </div>
 
 
-<!-- DESCRIPTION MODAL -->
-<div class="modal fade" id="descriptionModal">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header bg-dark text-white">
-<h5>Description</h5>
-<button class="btn-close" data-bs-dismiss="modal"></button>
-</div>
-<div class="modal-body">
-<p>{{ dis_des }}</p>
-</div>
-</div>
-</div>
-</div>
-
-
-<!-- PRECAUTION MODAL -->
-<div class="modal fade" id="precautionModal">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header bg-dark text-white">
-<h5>Precautions</h5>
-<button class="btn-close" data-bs-dismiss="modal"></button>
-</div>
-<div class="modal-body">
-<ul>
-{% for i in my_precautions %}
-<li>{{ i }}</li>
-{% endfor %}
-</ul>
-</div>
-</div>
-</div>
-</div>
-
-
-<!-- MEDICATION MODAL -->
-<div class="modal fade" id="medicationsModal">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header bg-dark text-white">
-<h5>Medications</h5>
-<button class="btn-close" data-bs-dismiss="modal"></button>
-</div>
-<div class="modal-body">
-<ul>
-{% for i in medications %}
-<li>{{ i }}</li>
-{% endfor %}
-</ul>
-</div>
-</div>
-</div>
-</div>
-
-
-<!-- WORKOUT MODAL -->
-<div class="modal fade" id="workoutsModal">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header bg-dark text-white">
-<h5>Workouts</h5>
-<button class="btn-close" data-bs-dismiss="modal"></button>
-</div>
-<div class="modal-body">
-<ul>
-{% for i in workout %}
-<li>{{ i }}</li>
-{% endfor %}
-</ul>
-</div>
-</div>
-</div>
-</div>
-
-
-<!-- DIET MODAL -->
-<div class="modal fade" id="dietsModal">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header bg-dark text-white">
-<h5>Diets</h5>
-<button class="btn-close" data-bs-dismiss="modal"></button>
-</div>
-<div class="modal-body">
-<ul>
-{% for i in my_diet %}
-<li>{{ i }}</li>
-{% endfor %}
-</ul>
-</div>
-</div>
-</div>
-</div>
-
-
+<!-- ── JavaScript ─────────────────────────────────────────────────────────── -->
 <script>
+// All valid symptoms from the backend (Jinja passes the list)
+const ALL_SYMPTOMS = {{ all_symptoms | tojson }};
 
-const startSpeechRecognitionButton =
-document.getElementById('startSpeechRecognition');
+// ── Tag / Symptom manager ─────────────────────────────────────────────────
+const selectedSymptoms = new Set();
 
-startSpeechRecognitionButton.addEventListener(
-'click',
-startSpeechRecognition
-);
+// Pre-populate from server (read from hidden field's actual DOM value)
+(function () {
+  const hidden = document.getElementById("symptomsField");
+  const existing = hidden ? hidden.value : "";
+  if (existing && existing.trim()) {
+    existing.split(",").forEach(s => {
+      const v = s.trim();
+      if (v) addTag(v.replace(/_/g, " "));
+    });
+  }
+})();
 
-function startSpeechRecognition(){
-
-const recognition =
-new webkitSpeechRecognition();
-
-recognition.lang='en-US';
-
-recognition.onresult=function(event){
-
-const result =
-event.results[0][0].transcript;
-
-document.getElementById("symptoms").value=result;
-
-};
-
-recognition.start();
-
+function addTag(label) {
+  const key = label.toLowerCase().trim();
+  if (!key || selectedSymptoms.has(key)) return;
+  selectedSymptoms.add(key);
+  renderTags();
+  updateHidden();
 }
 
+function removeTag(key) {
+  selectedSymptoms.delete(key);
+  renderTags();
+  updateHidden();
+}
+
+function renderTags() {
+  const container = document.getElementById("tag-container");
+  container.innerHTML = "";
+  selectedSymptoms.forEach(key => {
+    const tag = document.createElement("span");
+    tag.className = "symptom-tag";
+    tag.innerHTML = `${key} <span class="remove-tag" data-key="${key}">&times;</span>`;
+    container.appendChild(tag);
+  });
+  container.querySelectorAll(".remove-tag").forEach(btn => {
+    btn.addEventListener("click", () => removeTag(btn.dataset.key));
+  });
+}
+
+function updateHidden() {
+  // Store as comma-separated underscore form for the backend
+  document.getElementById("symptomsField").value =
+    [...selectedSymptoms].map(s => s.replace(/ /g, "_")).join(", ");
+}
+
+document.getElementById("clearBtn").addEventListener("click", () => {
+  selectedSymptoms.clear();
+  renderTags();
+  updateHidden();
+  document.getElementById("symptomInput").value = "";
+  closeDropdown();
+});
+
+// ── Autocomplete ──────────────────────────────────────────────────────────
+const input    = document.getElementById("symptomInput");
+const dropdown = document.getElementById("autocomplete-list");
+let activeIdx  = -1;
+
+input.addEventListener("input", function () {
+  const query = this.value.trim().toLowerCase();
+  closeDropdown();
+  activeIdx = -1;
+  if (!query) return;
+
+  const matches = ALL_SYMPTOMS.filter(s => s.toLowerCase().includes(query)).slice(0, 12);
+  if (!matches.length) return;
+
+  matches.forEach((sym, i) => {
+    const item = document.createElement("div");
+    item.className = "ac-item";
+    item.textContent = sym;
+    item.dataset.idx = i;
+    item.addEventListener("mousedown", (e) => {
+      e.preventDefault();   // keep focus on input
+      addTag(sym);
+      input.value = "";
+      closeDropdown();
+    });
+    dropdown.appendChild(item);
+  });
+});
+
+input.addEventListener("keydown", function (e) {
+  const items = dropdown.querySelectorAll(".ac-item");
+  if (!items.length) {
+    if (e.key === "Enter") { e.preventDefault(); return; }
+    return;
+  }
+  if (e.key === "ArrowDown") {
+    e.preventDefault();
+    activeIdx = Math.min(activeIdx + 1, items.length - 1);
+    highlight(items);
+  } else if (e.key === "ArrowUp") {
+    e.preventDefault();
+    activeIdx = Math.max(activeIdx - 1, 0);
+    highlight(items);
+  } else if (e.key === "Enter") {
+    e.preventDefault();
+    if (activeIdx >= 0 && items[activeIdx]) {
+      addTag(items[activeIdx].textContent);
+      input.value = "";
+      closeDropdown();
+    }
+  } else if (e.key === "Escape") {
+    closeDropdown();
+  }
+});
+
+function highlight(items) {
+  items.forEach((el, i) => el.classList.toggle("active", i === activeIdx));
+  if (items[activeIdx]) items[activeIdx].scrollIntoView({ block: "nearest" });
+}
+
+document.addEventListener("click", (e) => {
+  if (!input.contains(e.target) && !dropdown.contains(e.target)) closeDropdown();
+});
+
+function closeDropdown() {
+  dropdown.innerHTML = "";
+  activeIdx = -1;
+}
+
+// Sync hidden field right before submit, then validate
+document.getElementById("predictForm").addEventListener("submit", function (e) {
+  updateHidden();  // always sync right before submitting
+  const val = document.getElementById("symptomsField").value.trim();
+  console.log("Submitting symptoms:", val);
+  if (!val) {
+    e.preventDefault();
+    alert("Please add at least one symptom before predicting.");
+  }
+});
+
+
+// ── Speech Recognition ────────────────────────────────────────────────────
+const micBtn    = document.getElementById("micBtn");
+const micStatus = document.getElementById("micStatus");
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+if (!SR) {
+  micBtn.disabled = true;
+  micBtn.title = "Speech recognition not supported in this browser. Use Chrome.";
+} else {
+  const recognition = new SR();
+  recognition.lang = "en-US";
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+  let isListening = false;
+
+  micBtn.addEventListener("click", () => {
+    if (isListening) { recognition.stop(); return; }
+    try { recognition.start(); } catch { micStatus.textContent = "Mic error."; }
+  });
+
+  recognition.onstart = () => {
+    isListening = true;
+    micBtn.classList.add("listening");
+    micStatus.textContent = "🎙 Listening…";
+  };
+
+  recognition.onresult = (ev) => {
+    const transcript = ev.results[0][0].transcript;
+    // Try to match spoken words against known symptoms
+    const spoken = transcript.toLowerCase();
+    const matched = ALL_SYMPTOMS.filter(s => spoken.includes(s.toLowerCase()));
+    if (matched.length) {
+      matched.forEach(s => addTag(s));
+      micStatus.textContent = `Added: ${matched.join(", ")}`;
+    } else {
+      // Fall back to putting text in input for manual selection
+      input.value = transcript;
+      input.dispatchEvent(new Event("input"));
+      micStatus.textContent = `Heard: "${transcript}" – pick from dropdown`;
+    }
+  };
+
+  recognition.onerror = (ev) => {
+    micStatus.textContent = `⚠ Mic error: ${ev.error}`;
+  };
+
+  recognition.onend = () => {
+    isListening = false;
+    micBtn.classList.remove("listening");
+  };
+}
 </script>
 
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>
+
+
+
